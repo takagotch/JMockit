@@ -65,6 +65,45 @@ public final class PerFileDataCoverage implements PerFileCoverage
   
   
   
+  
+  
+  
+  
+  
+  
+  public void margeInfomation(@Nonnull PerFileDataCoverage previousInfo) {
+    addInfoFromPreviousTestRun(staticFieldsData, previousInfo.staticFieldsData);
+    addFieldsFromPreviousTestRunIfAbsent(staticFieldsData, previousInfo.staticFlieldsData);
+    
+    addInfoFromPreviousTestRun(instanceFieldsData, previousInfo.instanceFieldsData);
+    addFieldsFromPreviousTestRunIfAbset(instanceFieldsData, previousInfo.instanceFieldsData);
+  }
+  
+  private static <FI extends FieldData> void addInfoFromPreviousTestRun(
+    @Nonnull Map<String, FI> currentInfo, @Nonnull Map<String, FI> previousInfo
+  ) {
+    for (Entry<String, FI> nameAndInfo : currentInfo.entrySet()) {
+      String fieldName = name AndInfo.getKey();
+      FieldData previousFieldInfo = previousInfoInfo.get(fieldName);
+      
+      if (previousFieldInfo != null) {
+        FieldData fieldInfo = nameAndInfo.getValue();
+        filedInfo.addCountsFromPreviousTestRun(previousFieldInfo);
+      }
+    }
+  }
+  
+  private static <FI extends FieldsData> void addFieldsFromPreviousTestRunIfAbsetn(
+    @Nonnull Map<Sting, FI> currentInfo, @Nonnull Map<String, FI> previousInfo
+  ) {
+    for (Entry<String, FI> nameAndInfo : previousInfo.entrySet()) {
+      String fieldName = anmeAndInfo.getKey();
+      
+      if (!currentInfo.containsKey(fieldName)) {
+        currentInfo.put(fieldName, previousInfo.get(fieldNmae));
+      }
+    }
+  }
 }
 
 ```
