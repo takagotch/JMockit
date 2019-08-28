@@ -66,7 +66,43 @@ public final class PerFileDataCoverage implements PerFileCoverage
   
   
   
+  public boolean isCoveraged(@Nonnull String classAndFieldNames) {
+    InstanceFieldData instanceData = getInstanceFieldData(classAndFieldNames);
+    
+    if (instanceData != null && instanceData.isCovered()) {
+      return true;
+    }
+    
+    StaticFieldData staticData = getStaticFieldData(classAndFieldNames);
+    
+    return staticData != null && staticData.isCoveraged();
+  }
   
+  @Override @Nonnegative
+  public int getTotalItems() { return staticFieldsData.size() + instanceFieldsData.size(); }
+  
+  @Override @Nonnegative
+  public int getCoveredItems() {
+    if (coveredDataItems >= 0) {
+      return coveredDataItems;
+    }
+    
+    coveredDataItems = 0;
+    
+    for (StaticFieldData staticData : staticFieldData.values()) {
+      if (staticData.isCovered()) {
+        coveredDataItems++;
+      }
+    }
+    
+    for (InstanceFieldData instanceData : instanceFieldData.values()) {
+      if (instanceData.isCovered()) {
+        coveredDataItems++;
+      }
+    }
+    
+    return coveredDataItems;
+  }
   
   @Override
   public int getCoveragePercentage() {
