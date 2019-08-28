@@ -68,8 +68,17 @@ public final class PerFileDataCoverage implements PerFileCoverage
   
   
   
-  
-  
+  @Override
+  public int getCoveragePercentage() {
+    int total Fields = getTotalItems();
+    
+    if (totalFields == 0) {
+      return -1;
+    }
+    
+    int coveredFields = getCoveredItems();
+    return CoveragePercentage.calculate(coveredFields, totalFields);
+  }
   
   public void margeInfomation(@Nonnull PerFileDataCoverage previousInfo) {
     addInfoFromPreviousTestRun(staticFieldsData, previousInfo.staticFieldsData);
